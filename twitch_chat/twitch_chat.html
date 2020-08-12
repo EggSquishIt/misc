@@ -1,0 +1,60 @@
+<html>
+  <head>
+  	<style>
+  		.message {
+  			font-family: sans-serif;
+  			text-shadow: 1px 1px 0 black,
+			  			 -1px 1px 0 black,
+  						 1px -1px 0 black,
+  			 			 -1px -1px 0 black,
+  			 			 2px 1px 0 black;
+  		}
+  		.username {
+
+  		}
+  		.text {
+  			color: white;
+  		}
+  	</style>
+	<script src="tmi.js"></script>
+  	<script>
+		const client = new tmi.Client({
+			connection: {
+				secure: true,
+				reconnect: true
+			},
+			channels: [ 'EggSquishIt' ]
+		});
+
+		client.connect();
+
+		client.on('message', (channel, tags, msg, self) => {
+			var message = document.createElement("div");
+			message.classList.add("message");
+
+				var username = document.createElement("font");
+				username.classList.add("username");
+				username.style.color = tags.color;
+				username.textContent = tags["display-name"];
+				message.appendChild(username);
+
+				var space = document.createElement("font");
+				space.textContent = " ";
+				message.appendChild(space);
+
+				var text = document.createElement("font");
+				text.classList.add("text");
+				text.textContent = msg;
+				message.appendChild(text);
+
+			document.body.appendChild(message);
+
+			setTimeout(function() {
+				document.body.removeChild(message);
+			}, 15000);
+		});
+  	</script>
+  </head>
+  <body>
+  </body>
+</html>
